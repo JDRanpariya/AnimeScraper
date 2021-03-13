@@ -3,9 +3,9 @@ atm it will scrape anime planet for MetaData.
 
 # TODO
 - [ ] Write scrapers
-      - [x] character scraper
-      - [ ] anime scraper
-      - [ ] movie scraper
+    - [x] character scraper
+    - [ ] anime scraper
+    - [ ] movie scraper
 - [x] create schema & models
 - [x] create data pipeline for postgres
 - [ ] integrate gogoanime from noob

@@ -1,1 +1,97 @@
-<mxfile host="app.diagrams.net" modified="2021-03-13T08:33:45.861Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36" version="14.4.4" etag="OtfaDC9EDtyEB3npJaqH" type="github"><diagram id="CmthH9cxXKZI6WYA6KJL">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-03-13T08:48:23.966Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36" etag="VBM5pjwucNtGRh1oErg1" version="14.4.4" type="github">
+  <diagram id="CmthH9cxXKZI6WYA6KJL" name="Page-1">
+    <mxGraphModel dx="1038" dy="548" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-1" value="AnimePlanet.com&lt;br&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="690" y="220" width="116" height="116" as="geometry" />
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-2" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="690" y="280" as="sourcePoint" />
+            <mxPoint x="560" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="570" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-3" value="Scrapy" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="480" y="238" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-4" value="" style="endArrow=classic;html=1;exitX=0.084;exitY=0.235;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SCkEd9ZFz6nsynLdOU4C-3" target="SCkEd9ZFz6nsynLdOU4C-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="280" as="sourcePoint" />
+            <mxPoint x="390" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-5" value="" style="endArrow=classic;html=1;exitX=0.071;exitY=0.753;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="SCkEd9ZFz6nsynLdOU4C-3" target="SCkEd9ZFz6nsynLdOU4C-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="496.72" y="266.8" as="sourcePoint" />
+            <mxPoint x="430" y="278" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-6" value="Anime&lt;br&gt;Pipeline" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="170" width="120" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-7" value="Characters&lt;br&gt;Pipeline" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=0;" vertex="1" parent="1">
+          <mxGeometry x="260" y="318" width="120" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-8" value="Postgresql" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="40" y="222" width="100" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-9" value="" style="endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="SCkEd9ZFz6nsynLdOU4C-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="170" y="290" as="sourcePoint" />
+            <mxPoint x="200" y="278" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-10" value="" style="endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="SCkEd9ZFz6nsynLdOU4C-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="270.0000000000001" y="209" as="sourcePoint" />
+            <mxPoint x="200" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-13" value="" style="endArrow=classic;startArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="278" as="sourcePoint" />
+            <mxPoint x="200" y="278" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-14" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="SCkEd9ZFz6nsynLdOU4C-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="440" as="sourcePoint" />
+            <mxPoint x="490" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-15" value="Anime Item, Spider&lt;br&gt;&amp;amp;&lt;br&gt;Character Item, Spider" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="440" y="440" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-16" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" target="SCkEd9ZFz6nsynLdOU4C-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="220" as="sourcePoint" />
+            <mxPoint x="490" y="260" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="150" y="170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-17" value="Check if it already exists" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="390" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-18" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="SCkEd9ZFz6nsynLdOU4C-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="400" as="sourcePoint" />
+            <mxPoint x="260" y="364.5" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="140" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SCkEd9ZFz6nsynLdOU4C-19" value="Check if it already exists" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="140" width="100" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

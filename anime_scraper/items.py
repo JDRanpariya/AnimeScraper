@@ -7,43 +7,35 @@ from scrapy.item import Item, Field
 
 
 
-class sceneItem(Item):
+class animeItem(Item):
 
     title = Field()
+    alt_title = Field()
     thumbnail_url = Field()
     preview_url = Field()
-    length = Field()
+    no_of_episodes = Field()
     description = Field()
     gallary_urls = Field()
     studio = Field()
-    parent_studio = Field()
-    performers = Field() 
-    director = Field()
+    characters = Field() 
     release_date = Field()
     rating = Field()
-    movie = Field()
+    rank = Field()
     tags = Field()
-    std_url=Field()
+    reviews = Field()
 
-class performerItem(Item):
+
+class characterItem(Item):
 
     name = Field()
-    aliases = Field()
     gender = Field()
-    description = Field()
-    profile_pic = Field()
-    date_of_birth = Field() # get age from here
-    years_active = Field()
-    ethnicity = Field()
-    birth_place = Field()
-    height = Field()
+    description = Column('description', Text(), nullable=True)
+    profile_pic = Field() # get age from here
     hair_color = Field()
-    eye_color = Field()
-    boobs = Field()
-    tattoos = Field()
-    piercings = Field()
-    measurments = Field()
+    rank = Field()
     rating = Field()
+    animes = Field()
+    movies = Field()
 
 
 class movieItem(Item):
@@ -51,16 +43,15 @@ class movieItem(Item):
     movie_title = Field()
     movie_cover = Field()
     movie_trailer = Field()
-    length = Field()
     description = Field()
+    length = Field()
     gallary_urls = Field()
     studio = Field()
-    performers = Field() 
-    director = Field()
+    characters = Field() 
     release_date = Field()
     rating = Field()
-    scenes = Field()
-    genres = Field()
+    rank = Field()
     tags = Field()
+    reviews = Field()
 
 

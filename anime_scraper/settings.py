@@ -5,7 +5,7 @@ import os
 
 #load_dotenv(dotenv_path=Path("../.env"))
 load_dotenv(find_dotenv())
-# Scrapy settings for nsfw_scraper project
+# Scrapy settings for anime_scraper project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -14,14 +14,14 @@ load_dotenv(find_dotenv())
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'nsfw_scraper'
+BOT_NAME = 'anime_scraper'
 
-SPIDER_MODULES = ['nsfw_scraper.spiders']
-NEWSPIDER_MODULE = 'nsfw_scraper.spiders'
+SPIDER_MODULES = ['anime_scraper.spiders']
+NEWSPIDER_MODULE = 'anime_scraper.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'nsfw_scraper (+http://www.yourdomain.com)'
+#USER_AGENT = 'anime_scraper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -55,14 +55,14 @@ DOWNLOAD_TIMEOUT = 150
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'nsfw_scraper.middlewares.NsfwScraperSpiderMiddleware': 543,
+#    'anime_scraper.middlewares.animeScraperSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-   'nsfw_scraper.middlewares.UserAgentRotatorMiddleware': 400,
+   'anime_scraper.middlewares.UserAgentRotatorMiddleware': 400,
    #'rotating_proxies.middlewares.RotatingProxyMiddleware': 500,
     #'rotating_proxies.middlewares.BanDetectionMiddleware': 500,
 }
@@ -76,9 +76,9 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'nsfw_scraper.pipelines.ScenePipeline': 300,
-    'nsfw_scraper.pipelines.PerformerPipeline': 400,
-    'nsfw_scraper.pipelines.MoviePipeline': 400,
+    'anime_scraper.pipelines.ScenePipeline': 300,
+    'anime_scraper.pipelines.PerformerPipeline': 400,
+    'anime_scraper.pipelines.MoviePipeline': 400,
 }
 # postgres
 DATABASE = {

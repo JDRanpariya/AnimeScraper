@@ -2,52 +2,52 @@ from scrapy import Spider
 from string import ascii_uppercase
 import re
 import json, logging
-from ..items import performerItem
+from ..items import characterItem
 import scrapy
 from datetime import datetime
 import time
 
-base_uri = "https://www.babepedia.com"
+base_uri = "https://www.anime-planet.com"
 
 class AD4XPerformerSpider(Spider):
-    name = "ad4xPerformer"
-    allowed_domains = ["ad4x.com"]
-    custom_settings = {'ITEM_PIPELINES': {'nsfw_scraper.pipelines.PerformerPipeline': 400}}
+    name = "ap_characters"
+    allowed_domains = ["anime-planet.com"]
+    custom_settings = {'ITEM_PIPELINES': {'anime_scraper.pipelines.PerformerPipeline': 400}}
     start_urls = [
-        "https://ad4x.com/tour/en/models/all"
+        "https://www.anime-planet.com/characters/all"
     ]
     
 
     def parse(self, response):
 
-        performers = response.xpath("//div[@class='inner-wrap']/a/img/@src").getall()
+        characters = response.xpath("//*[@class='tableAvatar']/a[1]/@href").getall()
 
-        for performer_url in performers:
+        for character_url in characters:
             #print(base_uri + scene_url)
-            yield scrapy.Request(url=performer_url, callback=self.parse_performer)
+            yield scrapy.Request(url=character_url, callback=self.parse_character)
         #last_page_url = response.xpath("//li[@class='sowzbh-1 gjRQwQ'][7]/a/@href").get()
         #page_num = re.findall("\d+", last_page_url)[0]
 
-        for page_num in range(1,14):
-            yield scrapy.Request(url=f"https://ad4x.com/tour/en/models/all?page={page_num}", callback=self.parse)
+        for page_num in range(1,3):
+            yield scrapy.Request(url=f"https://www.anime-planet.com/characters/all?page={page_num}", callback=self.parse)
 
         
 
 
-    def parse_performer(self, response):
+    def parse_character(self, response):
 
-        atr = response.xpath("//li/span/text()").getall() # bio fiels available
+        #atr = response.xpath("//li/span/text()").getall() # bio fiels available
 
-        item = performerItem()
+        item = characterItem()
 
-        item['name'] = response.xpath("//h2[@class='mb-4 model-name']/font/font/text()").get()
+        item['name'] = response.xpath("//h1[@itemprop='name']/text()").get()
 
-        if response.xpath("//h2[@id='aka']/text()").get() is not None:
-            item['aliases'] = response.xpath("//h2[@id='aka']/text()").get()
+        if response.xpath("//h2[@class='aka']/text()").get() is not None:
+            item['alt_name'] = response.xpath("//h2[@id='aka']/text()").get()
         else:
-            item['aliases'] = ''
+            item['alt_name'] = ''
 
-        item['gender'] = 'Female'
+        item['gender'] = response.xpath("//div[@class='pure-1 md-1-5']/text()").get().split(":")[-1]
 
         if response.xpath("//div[@class='babebanner separate']/p/text()").getall() == []:
             item['description'] = ''

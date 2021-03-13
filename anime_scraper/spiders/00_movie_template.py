@@ -11,7 +11,7 @@ base_uri = "https://www.adultdvdempire.com"
 class movieSpider(Spider):
     name = "yourspider"
     allowed_domains = ["adultdvdempire.com"]
-    custom_settings = {'ITEM_PIPELINES': {'nsfw_scraper.pipelines.MoviePipeline': 400}}
+    custom_settings = {'ITEM_PIPELINES': {'anime_scraper.pipelines.MoviePipeline': 400}}
     start_urls = [
         "https://www.adultdvdempire.com/95898/studio/2020-vision-porn-movies.html"
     ]

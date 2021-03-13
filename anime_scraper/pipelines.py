@@ -14,13 +14,13 @@
 #from scrapy import signals
 import logging
 from sqlalchemy.orm import sessionmaker
-from nsfw_scraper.models import Scene, Rating, Tag, Studio, Movie, Genre, Director, ReleaseDate, Performer, db_connect, create_table
-from .items import sceneItem, performerItem, movieItem
+from anime_scraper.models import Anime, Rating, Tag, Studio, Movie, ReleaseDate, Character, db_connect, create_table
+from .items import animeItem, characterItem, movieItem
 
 
 class ScenePipeline(object):
 
-    """Vixen pipeline for storing scraped items in the database"""
+    """Anime pipeline for storing scraped items in the database"""
     
     def __init__(self):
         engine = db_connect()
@@ -32,11 +32,12 @@ class ScenePipeline(object):
 
         session = self.Session()
 
-        scene = Scene(
+        scene = Anime(
                     title = item['title'],
+                    alt_title = item['alt_title'],
                     thumbnail_url = item['thumbnail_url'],
                     preview_url = item['preview_url'],
-                    length = item['length'],
+                    no_of_episodes = item['no_of_episodes'],
                     description = item['description'],
                     gallary_urls = item['gallary_urls'], 
                     #studio = item['studio'],        #FK
@@ -47,21 +48,12 @@ class ScenePipeline(object):
                     #tags = item['tags']     #FK
         )
         #performer
-        for performer in item['performers']:
-            performert = session.query(Performer).filter_by(name=performer).first()
-            if performert is not None:
-                scene.performers.append(performert)
+        for character in item['characters']:
+            charactert = session.query(Character).filter_by(name=character).first()
+            if charactert is not None:
+                scene.performers.append(charactert)
             else:
-                scene.performers.append(Performer(name=performer))
-
-        #director
-        if item['director'] is not None:
-            for director in item['director']:
-                directort = session.query(Director).filter_by(name=director).first()
-                if directort is not None:
-                    scene.director = director
-                else:
-                    scene.performer = Director(name=director)
+                scene.performers.append(Character(name=character))
 
         #tag
         for tag in item['tags']:
@@ -77,7 +69,7 @@ class ScenePipeline(object):
         if studio is not None:
             scene.studio = studio
         else:
-            scene.studio = Studio(studio=item['studio'], parent_studio=item['parent_studio'], url=item['std_url'])
+            scene.studio = Studio(studio=item['studio'])
         
         #rating
         rating = session.query(Rating).filter_by(rating=item['rating']).first()
@@ -93,7 +85,7 @@ class ScenePipeline(object):
         else:
             scene.release_date = ReleaseDate(release_date=item['release_date'])
 
-        scene_exists = session.query(Scene).filter_by(title=item['title']).first() is not None
+        scene_exists = session.query(Anime).filter_by(title=item['title']).first() is not None
 
         if scene_exists:
             logging.info(f'Item {scene} is in db')
@@ -142,28 +134,13 @@ class MoviePipeline(object):
         )
         
         #performer
-        for performer in item['performers']:
-            performert = session.query(Performer).filter_by(name=performer).first()
+        for character in item['characters']:
+            performert = session.query(Character).filter_by(name=character).first()
             if performert is not None:
                 movie.performers.append(performert)
             else:
-                movie.performers.append(Performer(name=performer))
+                movie.performers.append(Character(name=character))
 
-        #director
-        for director in item['director']:
-            directort = session.query(Director).filter_by(name=director).first()
-            if directort is not None:
-                movie.director = director
-            else:
-                movie.performer = Director(name=director)
-
-        #genre
-        for genre in item['genres']:
-            genret = session.query(Genre).filter_by(genre=genre).first()
-            if genret is not None:
-                movie.genres.append(genret)
-            else:
-                movie.genres.append(Genre(genre=genre))
 
         #tag
         for count,tag in enumerate(item['tags']):
@@ -179,7 +156,7 @@ class MoviePipeline(object):
         if studio is not None:
             movie.studio = studio
         else:
-            movie.studio = Studio(studio=item['studio'], parent_studio=item['parent_studio'])
+            movie.studio = Studio(studio=item['studio'])
         
         #rating
         rating = session.query(Rating).filter_by(rating=item['rating']).first()
@@ -226,23 +203,14 @@ class PerformerPipeline(object):
     def process_item(self, item, spider):
 
         session = self.Session()
-        performer = Performer(
+        character = Character(
                     name = item['name'],
-                    aliases = item['aliases'],
                     gender = item['gender'],
                     description = item['description'],
                     profile_pic = item['profile_pic'],
-                    date_of_birth = item['date_of_birth'], # get age from here
-                    years_active = item['years_active'],
-                    ethnicity = item['ethnicity'],
-                    birth_place = item['birth_place'],
-                    height = item['height'],
+                    rank = item['rank'],
                     hair_color = item['hair_color'],
-                    eye_color = item['eye_color'],
-                    boobs = item['boobs'],
-                    tattoos = item['tattoos'],
-                    piercings = item['piercings'],
-                    measurments = item['measurments'],
+
                     #rating = Rating(rating=item['rating'])
                     
         )
@@ -250,25 +218,25 @@ class PerformerPipeline(object):
         rating = session.query(Rating).filter_by(rating=item['rating']).first()
         
         if rating is not None:
-            performer.rating = rating
+            character.rating = rating
         else:
-            performer.rating = Rating(rating=item['rating'])
+            character.rating = Rating(rating=item['rating'])
 
-        performer_exists = session.query(Performer).filter_by(name = item['name']).first() is not None
+        performer_exists = session.query(Character).filter_by(name = item['name']).first() is not None
 
         if performer_exists:
             #logging.info(item['name'])
             #logging.info(session.query(Performer).filter_by(name=item['name']).first())
-            logging.info(f'Item {performer} is in db')
+            logging.info(f'Item {character} is in db')
 
             return item
         else:
             try:
-                session.add(performer)
+                session.add(character)
                 session.commit()
-                logging.info(f'Item {performer} stored in db')
+                logging.info(f'Item {character} stored in db')
             except:
-                logging.info(f'Failed to add {performer} to db')
+                logging.info(f'Failed to add {character} to db')
                 session.rollback()
                 raise
             finally:

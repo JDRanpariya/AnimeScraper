@@ -1,52 +1,80 @@
 from scrapy import Spider
 import re
 import json
-from ..items import sceneItem
+from ..items import animeItem
 import scrapy
 from datetime import datetime
 import time
 
-base_uri = "https://letsdoeit.com/"
+# * working JDRanpariya
+
+base_uri = "https://www.anime-planet.com"
 
 class NameSpider(Spider):
-    name = "name"
-    allowed_domains = ["letsdoeit.com"]
+    name = "animes"
+    allowed_domains = ["anime-planet.com"]
     custom_settings = {'ITEM_PIPELINES': {'anime_scraper.pipelines.ScenePipeline': 400}}
     start_urls = [
-        "https://letsdoeit.com/videos.en.html"
+        "https://www.anime-planet.com/anime/all"
     ]
 
     def parse(self, response):
-        scenes = response.xpath("//div[@data-item='c-12 r-21']/a/@href").getall()
+        animes = response.xpath("//*[@data-type='anime']/a/@href").getall()
         
-        for scene_url in scenes:
-            #print(base_uri + scene_url)
-            yield scrapy.Request(url=base_uri + scene_url, callback=self.parse_scene)
+        for anime_url in animes:
+            #print(base_uri + anime_url)
+            yield scrapy.Request(url=base_uri + anime_url, callback=self.parse_anime)
         #time.sleep(0.5)
-        last_page_url = response.xpath("//div[@data-item='c-51 r-11 t-c-31 / middle right']/a/@href").get()
-        page_num = re.findall("\d+", last_page_url)[0]
+        #last_page_url = response.xpath("//div[@data-item='c-51 r-11 t-c-31 / middle right']/a/@href").get()
+        #page_num = re.findall("\d+", last_page_url)[0]
 
-        for page_num in range(1, int(page_num)+1):
-            yield scrapy.Request(url=f"https://letsdoeit.com/videos.en.html?page={page_num}", callback=self.parse)
+        for page_num in range(1,2):
+            yield scrapy.Request(url=f"https://www.anime-planet.com/anime/all?page={page_num}", callback=self.parse)
 
 
-    def parse_scene(self, response):
+    def parse_anime(self, response):
 
-            item = sceneItem()
+            item = animeItem()
 
-            item['title'] = response.xpath("//h1/text()").get()
-            item['thumbnail_url'] = response.xpath("//div[@itemprop='video']/meta[@itemprop='thumbnailUrl']/@content").get()
-            item['preview_url'] = response.xpath("//div[@itemprop='video']/meta[@itemprop='contentURL']/@content").get()
-            item['length'] = datetime.strptime(' '.join(i for i in re.findall("\d+", response.xpath("//div[@itemprop='video']/meta[@itemprop='duration']/@content").get())),"%M %S").time()
-            item['description'] = response.xpath("//div[@itemprop='video']/meta[@itemprop='description']/@content").get()
-            item['gallary_urls'] = response.xpath("//div[@class='swiper-slide gallery-swiper-slide']/a/svg/@data-bg").getall()
-            item['studio'] = response.xpath("//h2/a/strong/text()").get()
-            item['performers'] = response.xpath("//div[@class='actors']/h2/span/a/strong/text()").getall()
-            item['director'] = ''
-            item['release_date'] = datetime.strptime(response.xpath("//div[@itemprop='video']/meta[@itemprop='uploadDate']/@content").get().split('T')[0], "%Y-%m-%d")
-            item['rating'] = ''
-            item['movie'] = ''
-            item['tags'] = response.xpath("//div[@class='h5 no-space color-rgba255-06']/a/text()").getall()
+            item['title'] = response.xpath("//h1[@itemprop='name']/text()").get()
+            if response.xpath("//h2[@class='aka']/text()").get() is not None:
+                item['alt_title'] = response.xpath("//h2[@class='aka']/text()").get().strip()
+            else:
+                item['alt_title'] = None
+
+            # ! -> get trailer for anime
+            item['preview_url'] = None
+            item['no_of_episodes'] = int(re.findall("\d+", response.xpath("//div[@class='pure-1 md-1-5']/span/text()").get())[0])
+            item['thumbnail_url'] = [base_uri + response.xpath("//img[@itemprop='image']/@src").get()]
+
+            
+            if response.xpath("//div[@class='pure-1 md-3-5']/div/p/text()").getall() == []:
+                item['description'] = None
+            else:
+                lines = response.xpath("//div[@class='pure-1 md-3-5']/div/p/text()").getall()
+                description = ''.join(line for line in lines)
+                description = description.replace("\n","")
+                item['description'] = description
+
+            # ! TODO -> get gallary urls for anime
+            item['gallary_urls'] = None
+            item['studio'] = response.xpath("//div[@class='pure-1 md-1-5'][2]/a/text()").get()
+            item['characters'] = response.xpath("//a[@data-character-type='characters']/article/div/strong/text()").getall()
+
+            # ! TODO -> convert date from string to datetime obj
+            item['release_date'] = None # * its string -> response.xpath("//div[@class='pure-1 md-1-5'][3]/a/text()").get()
+            item['rating'] = 5
+            if response.xpath("//div[@class='pure-1 md-1-5'][5]/text()").get() is not None:
+                item['rank'] = response.xpath("//div[@class='pure-1 md-1-5'][5]/text()").get().split("#")[-1]
+            else:
+                item['rank'] = None
+            item['reviews'] = response.xpath("//a[@class='ShortReview rounded-card']/p/text()").getall()
+
+            tags = []
+            for tag in response.xpath("//div[@class='tags ']/ul/li/a/text()").getall():
+                tags.append(tag.strip())
+
+            item['tags'] = tags
 
 
             yield item

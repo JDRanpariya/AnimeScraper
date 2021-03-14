@@ -49,7 +49,7 @@ class Anime(DeclarativeBase):  # anime is entity type and calling-out is entity,
     alt_title = Column('alt_title', String, nullable=True)
     thumbnail_url = Column('thumbnail_url', String, nullable=True)
     preview_url = Column('preview_url', String, nullable=True)
-    no_of_episodes = Column('length', Time, nullable=True)
+    no_of_episodes = Column('no_of_episodes', Integer, nullable=True)
     description = Column('description', Text(), nullable=True)
     gallary_urls = Column("gallary_urls", ARRAY(String), nullable=True)
     rank = Column(Integer)
@@ -72,6 +72,7 @@ class Character(DeclarativeBase):
 
     id = Column(Integer, primary_key=True)
     name = Column('name', String)
+    alt_name = Column('alt_name', String, nullable=True)
     gender = Column('gender', Enum('Male', 'Female', 'Trans-M', 'Trans-F', 'Intersex', name='gender_type'))
     description = Column('description', Text(), nullable=True)
     profile_pic = Column('profile_pic', ARRAY(String))
@@ -81,9 +82,9 @@ class Character(DeclarativeBase):
     #repetative fields
     rating_id = Column(Integer, ForeignKey('ratings.id'))
 
-    animes = relationship("Anime", secondary=anime_cast_table, backref='characters', cascade_backrefs=False)
+    #animes = relationship("Anime", secondary=anime_cast_table, backref='characters', cascade_backrefs=False)
 
-    movies = relationship("Movie", secondary=movie_cast_table, backref='characters', cascade_backrefs=False)
+    #movies = relationship("Movie", secondary=movie_cast_table, backref='characters', cascade_backrefs=False)
 
 
 class ReleaseDate(DeclarativeBase):
@@ -131,8 +132,6 @@ class Movie(DeclarativeBase):
     release_date_id = Column(Integer, ForeignKey('releasedates.id'))
 
     rating_id = Column(Integer, ForeignKey('ratings.id'))
-    
-    animes = relationship("Anime", backref='movie', cascade_backrefs=False)
 
     tags = relationship("Tag", secondary=movie_tags_table, backref='movies', cascade_backrefs=False)
 

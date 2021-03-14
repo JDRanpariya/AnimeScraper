@@ -25,7 +25,7 @@ class ScenePipeline(object):
     def __init__(self):
         engine = db_connect()
         create_table(engine)
-        self.Session = sessionmaker(bind=engine, future=True)
+        self.Session = sessionmaker(bind=engine)
         
 
     def process_item(self, item, spider):
@@ -51,9 +51,9 @@ class ScenePipeline(object):
         for character in item['characters']:
             charactert = session.query(Character).filter_by(name=character).first()
             if charactert is not None:
-                scene.performers.append(charactert)
+                scene.characters.append(charactert)
             else:
-                scene.performers.append(Character(name=character))
+                scene.characters.append(Character(name=character))
 
         #tag
         for tag in item['tags']:
@@ -205,6 +205,7 @@ class PerformerPipeline(object):
         session = self.Session()
         character = Character(
                     name = item['name'],
+                    alt_name = item['alt_name'],
                     gender = item['gender'],
                     description = item['description'],
                     profile_pic = item['profile_pic'],

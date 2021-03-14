@@ -29,7 +29,8 @@ class characterItem(Item):
 
     name = Field()
     gender = Field()
-    description = Column('description', Text(), nullable=True)
+    alt_name = Field()
+    description = Field()
     profile_pic = Field() # get age from here
     hair_color = Field()
     rank = Field()

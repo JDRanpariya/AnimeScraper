@@ -21,12 +21,12 @@ def create_table(engine):
 
 anime_cast_table = Table('anime_cast_table', Base.metadata,
                     Column("anime_id", Integer, ForeignKey('animes.id')),
-                    Column("performer_id", Integer, ForeignKey('characters.id'))
+                    Column("character_id", Integer, ForeignKey('characters.id'))
                     )
 
 movie_cast_table = Table('movie_cast_table', Base.metadata,
                     Column("movie_id", Integer, ForeignKey('movies.id')),
-                    Column("performer_id", Integer, ForeignKey('characters.id'))
+                    Column("character_id", Integer, ForeignKey('characters.id'))
                     )
 
 anime_tags_table = Table('anime_tags_table', Base.metadata,
@@ -52,8 +52,8 @@ class Anime(DeclarativeBase):  # anime is entity type and calling-out is entity,
     no_of_episodes = Column('no_of_episodes', Integer, nullable=True)
     description = Column('description', Text(), nullable=True)
     gallary_urls = Column("gallary_urls", ARRAY(String), nullable=True)
-    rank = Column(Integer)
-    reviews = Column("anime_reviews", ARRAY(String), nullable=True)
+    rank = Column("rank",Integer, nullable=True)
+    # anime_reviews = Column("anime_reviews", ARRAY(String), nullable=True)
     #repetative fields
     
     studio_id = Column(Integer, ForeignKey('studios.id'))
@@ -106,7 +106,7 @@ class Rating(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     rating = Column('rating', Numeric, unique=True)
 
-    performers =relationship("Character", backref = "rating", cascade_backrefs=False)
+    characters =relationship("Character", backref = "rating", cascade_backrefs=False)
 
     animes = relationship("Anime", backref='rating', cascade_backrefs=False)
 
@@ -157,7 +157,7 @@ class Tag(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     tag_name = Column('tag', String, unique=True)
 
-    #animes = relationship("anime", secondary=anime_tags_table, back_populates='tags') # back_populates ref to tag defiend in animes table and vice versa 
+    #scenes = relationship("Scene", secondary=scene_tags_table, back_populates='tags') # back_populates ref to tag defiend in scenes table and vice versa 
 
     #movies = relationship("Movie", secondary=movie_tags_table, back_populates='tags')
 

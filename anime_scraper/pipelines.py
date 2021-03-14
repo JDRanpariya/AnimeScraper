@@ -32,7 +32,7 @@ class ScenePipeline(object):
 
         session = self.Session()
 
-        scene = Anime(
+        anime = Anime(
                     title = item['title'],
                     alt_title = item['alt_title'],
                     thumbnail_url = item['thumbnail_url'],
@@ -40,6 +40,8 @@ class ScenePipeline(object):
                     no_of_episodes = item['no_of_episodes'],
                     description = item['description'],
                     gallary_urls = item['gallary_urls'], 
+                    rank = item['rank'],
+                    # anime_reviews = item['anime_reviews']
                     #studio = item['studio'],        #FK
                     #performers = item['performers'],    #FK
                     #director = item['director'],    #FK
@@ -51,145 +53,59 @@ class ScenePipeline(object):
         for character in item['characters']:
             charactert = session.query(Character).filter_by(name=character).first()
             if charactert is not None:
-                scene.characters.append(charactert)
+                anime.characters.append(charactert)
             else:
-                scene.characters.append(Character(name=character))
+                anime.characters.append(Character(name=character))
 
-        #tag
+        # #tag
         for tag in item['tags']:
             #logging.info(tag, "theNewOne" , type([tag]))
             tagt = session.query(Tag).filter_by(tag_name=tag).first()
             if tagt is not None:
-                scene.tags.append(tagt)
+                anime.tags.append(tagt)
             else:
-                scene.tags.append(Tag(tag_name=tag))
+                anime.tags.append(Tag(tag_name=tag))
 
         #studio
         studio = session.query(Studio).filter_by(studio=item['studio']).first()
         if studio is not None:
-            scene.studio = studio
+            anime.studio = studio
         else:
-            scene.studio = Studio(studio=item['studio'])
+            anime.studio = Studio(studio=item['studio'])
         
         #rating
         rating = session.query(Rating).filter_by(rating=item['rating']).first()
+        
         if rating is not None:
-            scene.rating = rating
+            anime.rating = rating
         else:
-            scene.rating = Rating(rating=item['rating'])
+            anime.rating = Rating(rating=item['rating'])
 
         #release_date
         release_date = session.query(ReleaseDate).filter_by(release_date=item['release_date']).first()
         if release_date is not None:
-            scene.release_date = release_date
+            anime.release_date = release_date
         else:
-            scene.release_date = ReleaseDate(release_date=item['release_date'])
+            anime.release_date = ReleaseDate(release_date=item['release_date'])
 
-        scene_exists = session.query(Anime).filter_by(title=item['title']).first() is not None
+        anime_exists = session.query(Anime).filter_by(title=item['title']).first() is not None
 
-        if scene_exists:
-            logging.info(f'Item {scene} is in db')
+        if anime_exists:
+            logging.info(f'Item {session.query(Anime).filter_by(title=item["title"]).first()} is in db')
             return item
         else:
             try:
-                session.add(scene)
+                session.add(anime)
                 session.commit()
-                logging.info(f'Item {scene} stored in db')
+                logging.info(f'Item {anime} stored in db')
             except:
-                logging.info(f'Failed to add {scene} to db')
+                logging.info(f'Failed to add {anime} to db')
                 session.rollback()
                 raise
             finally:
                 session.close()
         return item
 
-class MoviePipeline(object):
-
-    """Movie pipeline for storing scraped items in the database"""
-    
-    def __init__(self):
-        engine = db_connect()
-        create_table(engine)
-        self.Session = sessionmaker(bind=engine)
-        
-
-    def process_item(self, item, spider):
-
-        session = self.Session()
-
-        movie = Movie(
-                    movie_title = item['movie_title'],
-                    movie_cover = item['movie_cover'],
-                    movie_trailer = item['movie_trailer'],
-                    length = item['length'],
-                    description = item['description'],
-                    gallary_urls = item['gallary_urls'], 
-                    #studio = item['studio'],            #FK
-                    #performers = item['performers'],        #FK
-                    #director = item['director'],        #FK
-                    #release_date = item['release_date'],    #FK
-                    #scenes = item['scenes'],            #FK
-                    #genres = item['genres'],        #FK
-                    #tags = item['tags']         #FK
-        )
-        
-        #performer
-        for character in item['characters']:
-            performert = session.query(Character).filter_by(name=character).first()
-            if performert is not None:
-                movie.performers.append(performert)
-            else:
-                movie.performers.append(Character(name=character))
-
-
-        #tag
-        for count,tag in enumerate(item['tags']):
-            #logging.info(tag, "theNewOne" , type([tag]))
-            tagt = session.query(Tag).filter_by(tag=tag).first()
-            if tagt is not None:
-                movie.tags.append(tagt)
-            else:
-                movie.tags.append(Tag(tag=tag))
-
-        #studio
-        studio = session.query(Studio).filter_by(studio=item['studio']).first()
-        if studio is not None:
-            movie.studio = studio
-        else:
-            movie.studio = Studio(studio=item['studio'])
-        
-        #rating
-        rating = session.query(Rating).filter_by(rating=item['rating']).first()
-        if rating is not None:
-            movie.rating = rating
-        else:
-            movie.rating = Rating(rating=item['rating'])
-
-        #release_date
-        release_date = session.query(ReleaseDate).filter_by(release_date=item['release_date']).first()
-        if release_date is not None:
-            movie.release_date = release_date
-        else:
-            movie.release_date = ReleaseDate(release_date=item['release_date'])
-
-
-        movie_exists = session.query(Movie).filter_by(title=item['title']).first() is not None
-
-        if movie_exists:
-            logging.info(f'Item {movie} is in db')
-            return item
-        else:
-            try:
-                session.add(movie)
-                session.commit()
-                logging.info(f'Item {movie} stored in db')
-            except:
-                logging.info(f'Failed to add {movie} to db')
-                session.rollback()
-                raise
-            finally:
-                session.close()
-        return item
 
 class PerformerPipeline(object):
     """Performer pipeline for storing scraped items in the database"""

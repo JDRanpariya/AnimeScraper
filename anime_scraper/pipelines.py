@@ -14,7 +14,7 @@
 #from scrapy import signals
 import logging
 from sqlalchemy.orm import sessionmaker
-from anime_scraper.models import Anime, Rating, Tag, Studio, Movie, ReleaseDate, Character, db_connect, create_table
+from anime_scraper.models import Anime, Rating, Studio, Movie, ReleaseDate, Character, db_connect, create_table
 from .items import animeItem, characterItem, movieItem
 
 
@@ -41,7 +41,7 @@ class ScenePipeline(object):
                     description = item['description'],
                     gallary_urls = item['gallary_urls'], 
                     rank = item['rank'],
-                    # anime_reviews = item['anime_reviews']
+                    #anime_reviews = item['anime_reviews']
                     #studio = item['studio'],        #FK
                     #performers = item['performers'],    #FK
                     #director = item['director'],    #FK
@@ -56,15 +56,6 @@ class ScenePipeline(object):
                 anime.characters.append(charactert)
             else:
                 anime.characters.append(Character(name=character))
-
-        # #tag
-        for tag in item['tags']:
-            #logging.info(tag, "theNewOne" , type([tag]))
-            tagt = session.query(Tag).filter_by(tag_name=tag).first()
-            if tagt is not None:
-                anime.tags.append(tagt)
-            else:
-                anime.tags.append(Tag(tag_name=tag))
 
         #studio
         studio = session.query(Studio).filter_by(studio=item['studio']).first()
@@ -88,10 +79,10 @@ class ScenePipeline(object):
         else:
             anime.release_date = ReleaseDate(release_date=item['release_date'])
 
-        anime_exists = session.query(Anime).filter_by(title=item['title']).first() is not None
+        anime_exists = session.query(Anime).filter(Anime.title == item['title']).first() is not None
 
         if anime_exists:
-            logging.info(f'Item {session.query(Anime).filter_by(title=item["title"]).first()} is in db')
+            logging.info(f'Item {item["title"]} vs {session.query(Anime).filter(Anime.title == item["title"]).first().title} is in db')
             return item
         else:
             try:

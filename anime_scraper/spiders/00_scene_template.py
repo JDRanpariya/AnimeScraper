@@ -68,7 +68,7 @@ class NameSpider(Spider):
                 item['rank'] = response.xpath("//div[@class='pure-1 md-1-5'][5]/text()").get().split("#")[-1]
             else:
                 item['rank'] = None
-            # item['anime_reviews'] = response.xpath("//a[@class='ShortReview rounded-card']/p/text()").getall()
+            #item['anime_reviews'] = response.xpath("//a[@class='ShortReview rounded-card']/p/text()").getall()
 
             tags = []
             for tag in response.xpath("//div[@class='tags ']/ul/li/a/text()").getall():

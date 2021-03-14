@@ -29,16 +29,6 @@ movie_cast_table = Table('movie_cast_table', Base.metadata,
                     Column("character_id", Integer, ForeignKey('characters.id'))
                     )
 
-anime_tags_table = Table('anime_tags_table', Base.metadata,
-                    Column("anime_id", Integer, ForeignKey('animes.id')),
-                    Column("tag_id", Integer, ForeignKey('tags.id'))
-                    )
-
-movie_tags_table = Table('movie_tags_table', Base.metadata,
-                    Column("movie_id", Integer, ForeignKey('movies.id')),
-                    Column("tag_id", Integer, ForeignKey('tags.id'))
-                    )
-   
 
 class Anime(DeclarativeBase):  # anime is entity type and calling-out is entity, title is attribute type
     """ c """
@@ -53,7 +43,7 @@ class Anime(DeclarativeBase):  # anime is entity type and calling-out is entity,
     description = Column('description', Text(), nullable=True)
     gallary_urls = Column("gallary_urls", ARRAY(String), nullable=True)
     rank = Column("rank",Integer, nullable=True)
-    # anime_reviews = Column("anime_reviews", ARRAY(String), nullable=True)
+    anime_reviews = Column("anime_reviews", ARRAY(String), nullable=True)
     #repetative fields
     
     studio_id = Column(Integer, ForeignKey('studios.id'))
@@ -64,7 +54,7 @@ class Anime(DeclarativeBase):  # anime is entity type and calling-out is entity,
 
     rating_id = Column(Integer, ForeignKey('ratings.id'))
 
-    tags = relationship("Tag", secondary=anime_tags_table, backref='animes', cascade_backrefs=False)
+    
 
 class Character(DeclarativeBase):
     """ c """
@@ -133,7 +123,6 @@ class Movie(DeclarativeBase):
 
     rating_id = Column(Integer, ForeignKey('ratings.id'))
 
-    tags = relationship("Tag", secondary=movie_tags_table, backref='movies', cascade_backrefs=False)
 
 
 class Studio(DeclarativeBase):
@@ -149,16 +138,5 @@ class Studio(DeclarativeBase):
 
     animes = relationship("Anime", backref="studio", cascade_backrefs=False)
 
-
-class Tag(DeclarativeBase):
-    """ c """
-    __tablename__ = 'tags'
-
-    id = Column(Integer, primary_key=True)
-    tag_name = Column('tag', String, unique=True)
-
-    #scenes = relationship("Scene", secondary=scene_tags_table, back_populates='tags') # back_populates ref to tag defiend in scenes table and vice versa 
-
-    #movies = relationship("Movie", secondary=movie_tags_table, back_populates='tags')
 
 

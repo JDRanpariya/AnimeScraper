@@ -22,7 +22,7 @@ class animeItem(Item):
     rating = Field()
     rank = Field()
     tags = Field()
-    # anime_reviews = Field()
+    anime_reviews = Field()
 
 
 class characterItem(Item):

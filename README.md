@@ -9,6 +9,7 @@ atm it will scrape anime planet for MetaData.
 - [x] create schema & models
 - [x] create data pipeline for postgres
 - [ ] integrate gogoanime from noob
+- [ ] update pipeline to support ___ DB
 
 ## Workflow
 ![](https://github.com/nsfwapp/AnimeScraper/blob/main/AnimeScraper.png)
